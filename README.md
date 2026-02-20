@@ -6,7 +6,7 @@ This project imports customer data from a CSV file into a MySQL database using P
 ```
 ├── README.md
 ├── bin
-│   └── console                        # Symfony ocndole entry point
+│   └── console                        # Symfony console entry point
 ├── composer.json
 ├── composer.lock
 ├── data
@@ -41,7 +41,7 @@ cp .env.example .env
 
 3. Preparing the database
 
-> Run the script ```src/setup.php``` using the command ```php setup.php```
+Run the script ```src/setup.php``` using the command ```php setup.php```
 
 4. Making bin/console executable:
 
