@@ -1,0 +1,27 @@
+# Composer vendor folder (dependencies)
+vendor/
+
+# PHPStorm / IDE settings
+.idea/
+*.iml
+
+# VSCode settings
+.vscode/
+
+# Logs and temporary files
+*.log
+*.cache
+*.tmp
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# PHPUnit / test caches
+.phpunit.result.cache
+
+# Build artifacts (if you have any)
+build/
+dist/
+cache/

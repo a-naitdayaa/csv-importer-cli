@@ -1,0 +1,19 @@
+{
+    "name": "app/csv_importer",
+    "autoload": {
+        "psr-4": {
+            "App\\CsvImporter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "a-naitdayaa",
+            "email": "a.naitdayaa@void.fr"
+        }
+    ],
+    "require": {
+        "league/csv": "^9.28",
+        "symfony/console": "^7.4",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
