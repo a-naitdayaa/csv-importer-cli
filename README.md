@@ -3,19 +3,28 @@
 This project imports customer data from a CSV file into a MySQL database using PHP, PDO, and the Symfony Console component.
 
 ## Project Structure
-├── composer.json<br>
-├── composer.lock<br>
-├── data<br>
-&emsp;&emsp;└── customers.csv<br>
-└── src<br>
-&emsp;&emsp;├── import.php<br>
-&emsp;&emsp;└── setup.php<br>
-└── vendor<br>
-
-- `data/` — CSV files to import  
-- `src/import.php` — CSV import CLI script  
-- `src/setup.php` — database setup
-- `vendor/` — Composer dependencies  
+```
+├── README.md
+├── bin
+│   └── console                        # Symfony ocndole entry point
+├── composer.json
+├── composer.lock
+├── data
+│   └── customers.csv
+└── src
+    ├── Database
+    │   └── Database.php                # Connection Logic
+    ├── Repository
+    │   └── CustomerRepository.php      # Batch insertion
+    ├── command
+    │   └── ImportCsvCommand.php        # Console Command
+    ├── service
+    │   ├── CsvImporter.php
+    │   ├── CsvReader.php               # CSV reading using league csv
+    │   └── CustomerValidator.php       # Minimal row validation
+    └── setup.php                       # Database setup
+└── vendor
+```
 
 ## Setup
 
@@ -34,10 +43,40 @@ cp .env.example .env
 
 > Run the script ```src/setup.php``` using the command ```php setup.php```
 
-4. Running the CLI import script 
+4. Making bin/console executable:
 
 ```bash
-php import.php csv:import ../data/customers.csv
+chmod +x bin/console
 ```
 
-* The script handles batches of 500 rows per insert
+## Usage 
+To import the data, run the command 
+
+```bash
+php bin/console csv:import data/customers.csv
+```
+
+## Project Components 
+
+### ImportCsvCommand.php
+* Handles CLI arguments and triggers the import workflow.
+* Uses the CsvImporter service to process the CSV file.
+
+### Database.php
+* Provides a getConnection() method.
+
+### Repository 
+* Handles all database operations, including batch insertion.
+* Controls batch size and transaction handling.
+
+### CsvImporter.php
+* Orchestrates the CSV import process:
+    * Reads rows using CsvReader
+    * Validates rows using CustomerValidator
+    * Sends valid rows to the repository for batch insertion
+
+### CsvReader.php
+* Reads the cvs file using league CSV
+
+### CustomerValidator.php
+* Validates each row for required fields (Customer Id & Email).
