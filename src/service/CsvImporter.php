@@ -31,17 +31,16 @@ class CsvImporter
 
             $batch[] = $record;
             if (count($batch) === $this->repo->getBatchSize()) {
-                $result = $this->repo->insertBatch($batch);
-                $inserted += $result['inserted'];
-                $skipped += $result['skipped'];
+                $this->repo->insertBatch($batch);
+                $inserted += count($batch);
+
                 $batch = [];
             }
         }
 
         if (!empty($batch)) {
-            $result = $this->repo->insertBatch($batch);
-            $inserted += $result['inserted'];
-            $skipped += $result['skipped'];
+            $this->repo->insertBatch($batch);
+            $inserted += count($batch);
         }
 
         return ['inserted' => $inserted, 'skipped' => $skipped];

@@ -16,8 +16,7 @@ use App\CsvImporter\Service\CsvReader;
 use App\CsvImporter\Repository\CustomerRepository;
 
 #[AsCommand(
-    name: 'csv:import',
-    description: 'Import customers from a CSV file into the database'
+    name: 'csv:import'
 )]
 class ImportCsvCommand extends Command
 {

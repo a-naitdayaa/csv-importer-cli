@@ -7,7 +7,7 @@ class CustomerRepository
     private \PDO $pdo;
     private int $batchSize;
 
-    public function __construct(\PDO $pdo, int $batchSize = 500)
+    public function __construct(\PDO $pdo, int $batchSize = 1000)
     {
         $this->pdo = $pdo;
         $this->batchSize = $batchSize;
@@ -18,14 +18,15 @@ class CustomerRepository
         return $this->batchSize;
     }
 
-    public function insertBatch(array $batch): array
+    public function insertBatch(array $batch): void
     {
         $placeholders = [];
         $values = [];
 
         foreach ($batch as $record) {
             $placeholders[] = "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $values = array_merge($values, [
+            array_push(
+                $values,
                 $record['Customer Id'],
                 $record['First Name'],
                 $record['Last Name'],
@@ -37,7 +38,7 @@ class CustomerRepository
                 $record['Email'],
                 $record['Subscription Date'],
                 $record['Website'],
-            ]);
+            );
         }
 
         $sql = 'INSERT INTO customers (customer_id, first_name, last_name, company, country, city, Phone1, Phone2, email, subscription_date, website) VALUES '
@@ -49,10 +50,9 @@ class CustomerRepository
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($values);
             $this->pdo->commit();
-            return ['inserted' => count($batch), 'skipped' => 0];
-        } catch (\Throwable $e) {
+        } catch (\PDOException $e) {
             $this->pdo->rollBack();
-            return ['inserted' => 0, 'skipped' => count($batch)];
+            throw $e;
         }
     }
 }

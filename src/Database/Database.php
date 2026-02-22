@@ -17,7 +17,7 @@ class Database
                 [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
             );
         } catch (\Throwable $e) {
-            throw new \RuntimeException("Database Connection Failed: {$e->getMessage()}");
+            throw new \RuntimeException("Database Connection Failed: {$e->getMessage()}", previous: $e);
         }
     }
 }
